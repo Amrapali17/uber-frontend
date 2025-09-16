@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from '../../../lib/supabaseClient';
+
 
 export default function SignupPage() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function SignupPage() {
   const [role, setRole] = useState("rider");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Email/password signup
+
   async function handleSignup(e) {
     e.preventDefault();
     const { error } = await supabase.auth.signUp({
@@ -24,7 +25,7 @@ export default function SignupPage() {
     else router.push("/login");
   }
 
-  // Google OAuth signup
+
   async function handleGoogleSignup() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",

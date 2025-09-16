@@ -1,4 +1,5 @@
 "use client";
+import { supabase } from '../../../lib/supabaseClient';
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -143,7 +144,6 @@ export default function RiderPage() {
   const debouncedPickup = useDebounce(pickup, 600);
   const debouncedDropoff = useDebounce(dropoff, 600);
 
-  // Fetch coordinates
   useEffect(() => {
     async function fetchCoordsAndDistance() {
       if (!debouncedPickup || !debouncedDropoff) return;
@@ -169,7 +169,7 @@ export default function RiderPage() {
         setPickupCoords([pickCoords[1], pickCoords[0]]);
         setDropoffCoords([dropCoords[1], dropCoords[0]]);
 
-        // Distance calculation using ORS Directions
+        
         const routeRes = await fetch(
           "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
           {
@@ -188,7 +188,7 @@ export default function RiderPage() {
     fetchCoordsAndDistance();
   }, [debouncedPickup, debouncedDropoff]);
 
-  // Fetch profile/history/payments/notifications
+ 
   const fetchRideHistory = useCallback(async () => {
     if (!token) return;
     let userId = null;
@@ -234,7 +234,7 @@ export default function RiderPage() {
     if (activePanel === "notifications") fetchNotifications();
   }, [activePanel, fetchRideHistory, fetchProfile, fetchPayments, fetchNotifications]);
 
-  // ------------------- Ride Handling -------------------
+
   const requestRide = async () => {
     if (!pickup || !dropoff) return;
     setLoading(true);
@@ -259,7 +259,7 @@ export default function RiderPage() {
 
       setServerMsg({ type: "success", text: "Ride requested successfully!" });
 
-      // Auto ride progression
+     
 setTimeout(() => setRideInfo((prev) => ({ ...prev, status: "accepted" })), 5000);       // accepted after 5s
 setTimeout(() => {
   setRideInfo((prev) => ({ ...prev, status: "in-progress" }));                          // in-progress after 10s
@@ -310,10 +310,10 @@ setTimeout(() => {
     }
   };
 
-  // ------------------- JSX -------------------
+ 
   return (
     <div className="flex h-screen w-screen bg-gray-100 text-gray-900">
-      {/* Sidebar */}
+      {}
       <div className="w-64 bg-gray-900 text-white flex flex-col">
         <div className="p-4 font-bold text-xl">Drivio Rider</div>
         <button className={`flex items-center gap-2 p-3 hover:bg-gray-700 ${activePanel === "home" ? "bg-gray-700" : ""}`} onClick={() => setActivePanel("home")}><HomeIcon className="h-5 w-5" /> Dashboard</button>
@@ -324,13 +324,13 @@ setTimeout(() => {
         <button className="flex items-center gap-2 p-3 mt-auto hover:bg-gray-700" onClick={() => { localStorage.removeItem("token"); router.push("/login"); }}><LogOut className="h-5 w-5" /> Logout</button>
       </div>
 
-      {/* Main */}
+      {}
       <div className="flex-1 overflow-y-auto p-4">
         {serverMsg && <div className={`p-3 rounded-xl mb-4 ${serverMsg.type === "success" ? "bg-green-600" : "bg-red-600"} text-white`}><div className="flex justify-between">{serverMsg.text} <X className="h-4 w-4 cursor-pointer" onClick={() => setServerMsg(null)} /></div></div>}
 
         {activePanel === "home" && (
           <div className="flex gap-4">
-            {/* Left Panel */}
+            {}
             <div className="flex flex-col w-96 bg-gray-50 p-6 gap-3 rounded-xl shadow-md">
               <input type="text" placeholder="Pickup location" className="p-3 border rounded-xl" value={pickup} onChange={(e) => setPickup(e.target.value)} />
               <input type="text" placeholder="Dropoff location" className="p-3 border rounded-xl" value={dropoff} onChange={(e) => setDropoff(e.target.value)} />
@@ -376,7 +376,7 @@ setTimeout(() => {
               )}
             </div>
 
-                       {/* Map Panel */}
+                       {}
                        <div className="flex-1 rounded-xl shadow-md overflow-hidden">
               <RiderMap
                 pickupCoords={pickupCoords}
@@ -388,7 +388,7 @@ setTimeout(() => {
           </div>
         )}
 
-        {/* Payment Section */}
+        {}
         {rideInfo && rideInfo.status === "completed" && (
           <div className="mt-2 p-3 bg-gray-100 rounded-xl flex flex-col gap-2">
             <div className="text-gray-700 font-semibold">
@@ -451,7 +451,7 @@ setTimeout(() => {
             )}
           </div>
         )}
-      </div> {/* closes flex-1 main panel */}
+      </div> {}
     </div> 
   );
 }
